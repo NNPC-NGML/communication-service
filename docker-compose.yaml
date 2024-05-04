@@ -33,7 +33,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - 1021:80
+      - 1031:80
     environment:
       - PMA_HOST=mysql
       - PMA_PASSWORD=Ubuxa##99
