@@ -43,10 +43,10 @@ class NotificationEmail extends Mailable
             view: 'emails.message',
             with: [
                 'title' => "Hello, {$this->notification->receiver}!",
-                'message' => $this->notification->message,
+                'message_body' => "{$this->notification->message_body}",
                 'appName' => "NNPC",
                 'websiteUrl' => 'https://website.com',
-                'logoUrl' => 'https://goldenhousest.com/wp-content/uploads/elementor/thumbs/logoipsum-logo-291-2-pbdagt3d6eoe13dh8p43mykjns17r67fbj0jl3vmcg.png',
+                'logoUrl' => 'https://firebasestorage.googleapis.com/v0/b/server-sec5.appspot.com/o/nnpc-logo.png?alt=media',
                 'supportMail' => 'support@mail.com',
             ]
         );

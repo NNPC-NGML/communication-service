@@ -14,6 +14,9 @@ use App\Http\Controllers\TestController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/test', function(){
+    return response('OK', 200);
+});
 
 
 Route::middleware('scope.user')->group(function () {
@@ -25,7 +28,7 @@ Route::middleware('scope.user')->group(function () {
 Route::get('/email-template', function(){
     return view('emails.message', [
         'title' => "Hello,  Dangote Cement!",
-        'message' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your issues has been addressed properly. Thank you!.",
+        'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
         'appName' => config('app.name'),
         'websiteUrl' => 'https://website.com',
         'logoUrl' => 'https://firebasestorage.googleapis.com/v0/b/server-sec5.appspot.com/o/nnpc-logo.png?alt=media',

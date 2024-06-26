@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('email_notifications', function (Blueprint $table) {
             $table->id();
             $table->string('receiver')->comment("customer name eg Dangoto Industry");
-            $table->longText('message')->comment("email message body");
+            $table->longText('message_body')->comment("email message body");
             $table->string('subject')->comment("email message subject");
             $table->string('email')->comment("email address to be sent a mail");
             $table->string('link')->nullable()->comment("Email clickable link if any");

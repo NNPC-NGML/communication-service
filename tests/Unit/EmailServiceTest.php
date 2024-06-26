@@ -23,7 +23,7 @@ class EmailServiceTest extends TestCase
     {
         $data = [
             "receiver" => "Dangoto Industry",
-            "message" => "This is a test message.",
+            "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
             "link" => "http://example.com"
@@ -32,7 +32,7 @@ class EmailServiceTest extends TestCase
         $result = $this->emailService->initialize($data);
         $this->assertIsObject($result);
         $this->assertEquals($data['receiver'], $result->receiver);
-        $this->assertEquals($data['message'], $result->message);
+        $this->assertEquals($data['message_body'], $result->message_body);
         $this->assertEquals($data['subject'], $result->subject);
         $this->assertEquals($data['email'], $result->email);
         $this->assertEquals($data['link'], $result->link);
@@ -42,7 +42,7 @@ class EmailServiceTest extends TestCase
     {
         $data = [
             "receiver" => "",
-            "message" => "This is a test message.",
+            "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
             "link" => "http://example.com"
@@ -56,8 +56,8 @@ class EmailServiceTest extends TestCase
     public function testSendNotificationEmail()
     {
         $notification = (object) [
-            "receiver" => "Dangoto Industry",
-            "message" => "This is a test message.",
+            "receiver" => "Dangote Cement",
+            'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
             "subject" => "Test Subject",
             "email" => "akubueaugustutuskc@gmail.com",
             "link" => "http://example.com"
