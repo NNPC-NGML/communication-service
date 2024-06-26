@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class EmailService
 {
-    const REMINDER = 0;
-    const COMPLETED = 1;
-    private object $notification;
-
     public function initialize(array $data): object
     {
         $validator = Validator::make($data, [
