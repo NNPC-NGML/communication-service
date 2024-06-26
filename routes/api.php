@@ -24,7 +24,6 @@ Route::middleware('scope.user')->group(function () {
 
 Route::get('/email-template', function(){
     return view('emails.message', [
-        // 'user' => $this->user,
         'title' => "Hello,  Dangote Cement!",
         'message' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your issues has been addressed properly. Thank you!.",
         'appName' => config('app.name'),

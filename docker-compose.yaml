@@ -1,31 +1,48 @@
-version: '3.8'
+version: "3.2"
 services:
   communication_service:
     build:
       context: .
       dockerfile: Dockerfile
-    command: 'php artisan serve --host=0.0.0.0'
+    command: "php artisan serve --host=0.0.0.0"
     volumes:
       - .:/app
     ports:
-      - 8001:8000
-    depends_on:
-      - communication_service_database
+      - 1030:8000
+    networks:
+      - communication_network
 
   communication_queue:
     build:
       context: .
       dockerfile: Dockerfile
-    command: 'php artisan queue:work'
-    depends_on:
-      - communication_service_database
+    command: "php artisan queue:work"
+    networks:
+      - communication_network
 
-  communication_service_database:
-    image: mysql
+  communication_database:
+    image: mariadb:10.5.8
     environment:
-      MYSQL_DATABASE: forge
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ./storage/dbdata:/var/lib/mysql
+      - MYSQL_ROOT_PASSWORD=Ubuxa##99
+      - MYSQL_DATABASE=forge
+      - MYSQL_USER=forge
+      - MYSQL_PASSWORD=Ubuxa##99
+    networks:
+      - communication_network
+
+  communication_phpmyadmin:
+    image: phpmyadmin
     ports:
-      - 33064:3306
+      - 1031:80
+    environment:
+      - PMA_HOST=communication_database
+      - PMA_PASSWORD=Ubuxa##99
+    networks:
+      - communication_network
+    restart: unless-stopped
+    volumes:
+      - .:/app
+
+networks:
+  communication_network:
+
