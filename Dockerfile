@@ -1,25 +1,14 @@
-FROM php:8.2.0
+FROM php:8.2-cli
 
-# Update package lists and install required dependencies
 RUN apt-get update && \
-    apt-get install -y openssl zip unzip git libpng-dev zlib1g-dev libjpeg-dev && \
-    docker-php-ext-configure gd --with-jpeg && \
-    docker-php-ext-install pdo_mysql gd
+    apt-get install -y zip unzip p7zip-full && \
+    docker-php-ext-install pdo pdo_mysql sockets && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install sockets
+# RUN docker-php-ext-install pdo pdo_mysql sockets
+RUN curl -sS https://getcomposer.org/installer | php -- \
+     --install-dir=/usr/local/bin --filename=composer
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-
-
-# Set working directory and copy Laravel application files
 WORKDIR /app
-COPY . /app
-
-# Install application dependencies
-
+COPY . .
 RUN composer install
-
-# Expose the port and start the PHP server
-EXPOSE $PORT
