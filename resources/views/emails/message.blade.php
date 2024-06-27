@@ -304,7 +304,9 @@
                                     <h1 style="margin-top: 20px">
                                         <a href="{{ $websiteUrl }}"
                                             style="display: flex;width: 100%;justify-content: center;align-items: center;gap:10px;font-weight: bold">
-                                            <img src="{{ $logoUrl }}" alt="{{ $appName }}"
+                                            {{-- <img src="{{ $logoUrl }}" alt="{{ $appName }}"
+                                                style="margin-right: 20px;width: 100px; object-fit: contain;"> --}}
+                                            <img src="{{ $message->embed(storage_path('app/public/images/nnpc-logo.png')) }}" alt="{{ $appName }}"
                                                 style="margin-right: 20px;width: 100px; object-fit: contain;">
                                         </a>
                                     </h1>

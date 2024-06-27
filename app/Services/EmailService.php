@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Mail\WelcomeEmail;
 use App\Mail\NotificationEmail;
+use App\Models\EmailNotification;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -29,18 +30,25 @@ class EmailService
 
     public function sendNotificationEmail(object $notification)
     {
-        // try {
+        try {
             // $this->initialize((array) $notification);    // reconfirm validation
             Mail::to($notification->email)->send(new NotificationEmail($notification));
 
-            // TODO (Save record of sent mail to database)
-
-        // } catch (\Throwable $th) {
-
-            // TODO failed mail, save record and track record, probably retry sending after a while...
-
-        // }
+            // (Save record of sent mail to database)
+            EmailNotification::create(array_merge((array) $notification));
+        } catch (\Throwable $th) {
+            // $th->getTraceAsString();
+            // failed mail, save record and track record, probably retry sending after a while...
+            EmailNotification::create(
+                array_merge(
+                    (array) $notification,
+                    [
+                        "error_message" => $th->getMessage(),
+                        "error_stack_trace" => $th->getTraceAsString(),
+                        "status" => false,
+                    ]
+                )
+            );
+        }
     }
-
-    // Add other email types as needed
 }

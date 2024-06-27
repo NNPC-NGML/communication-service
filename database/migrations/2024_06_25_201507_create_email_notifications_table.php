@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('email')->comment("email address to be sent a mail");
             $table->string('link')->nullable()->comment("Email clickable link if any");
             $table->boolean('status')->default(true)->comment("Email delivery status (true when delivered and false when failed)");
+            $table->longText('error_message')->nullable()->comment("error message from failed email");
+            $table->longText('error_stack_trace')->nullable()->comment("error trace from failed email");
             $table->timestamps();
         });
     }

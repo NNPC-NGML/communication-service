@@ -32,7 +32,7 @@ class SendEmailCommand extends Command
             "receiver" => "Dangote Cement",
             'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
             "subject" => "Test Subject",
-            "email" => "mederel156@cutxsew.com",
+            "email" => "akubueaugustuskca@gmail.com",
             "link" => "http://example.com"
         ]);
         $emailService->sendNotificationEmail($emailData);
