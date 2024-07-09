@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('email_notifications', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('notification_task_id');
             $table->string('receiver')->comment("customer name eg Dangoto Industry");
             $table->longText('message_body')->comment("email message body");
             $table->string('subject')->comment("email message subject");
