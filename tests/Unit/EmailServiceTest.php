@@ -19,9 +19,10 @@ class EmailServiceTest extends TestCase
         $this->emailService = new EmailService();
     }
 
-    public function testInitializeSuccess()
+    public function testValidateEmailDataSuccess()
     {
         $data = [
+            "notification_task_id" => 10,
             "receiver" => "Dangoto Industry",
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
@@ -29,8 +30,9 @@ class EmailServiceTest extends TestCase
             "link" => "http://example.com"
         ];
 
-        $result = $this->emailService->initialize($data);
+        $result = $this->emailService->validateEmailData($data);
         $this->assertIsObject($result);
+        $this->assertEquals($data['notification_task_id'], $result->notification_task_id);
         $this->assertEquals($data['receiver'], $result->receiver);
         $this->assertEquals($data['message_body'], $result->message_body);
         $this->assertEquals($data['subject'], $result->subject);
@@ -38,9 +40,10 @@ class EmailServiceTest extends TestCase
         $this->assertEquals($data['link'], $result->link);
     }
 
-    public function testInitializeValidationError()
+    public function testValidateEmailDataValidationError()
     {
         $data = [
+            "notification_task_id" => 10,
             "receiver" => "",
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
@@ -48,14 +51,20 @@ class EmailServiceTest extends TestCase
             "link" => "http://example.com"
         ];
 
-        $result = $this->emailService->initialize($data);
-        $this->assertInstanceOf(\Illuminate\Support\MessageBag::class, $result);
-        $this->assertTrue($result->has('receiver'));
+        try {
+            $result = $this->emailService->validateEmailData($data);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->assertTrue($e->validator->errors()->has('receiver'));
+            return;
+        }
+
+        $this->fail('Expected ValidationException was not thrown.');
     }
 
     public function testSendNotificationEmail()
     {
-        $notification = (object) [
+        $notification = [
+            "notification_task_id" => 10,
             "receiver" => "Dangote Cement",
             'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
             "subject" => "Test Subject",
@@ -68,7 +77,7 @@ class EmailServiceTest extends TestCase
         $this->emailService->sendNotificationEmail($notification);
 
         Mail::assertSent(NotificationEmail::class, function ($mail) use ($notification) {
-            return $mail->hasTo($notification->email);
+            return $mail->hasTo($notification["email"]);
         });
     }
 }
