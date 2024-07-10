@@ -114,7 +114,7 @@ class EmailService
             // failed mail, save record and track record, probably retry sending after a while...
             EmailNotification::create(
                 array_merge(
-                    (array) $notification,
+                    (array) $notificationRequest,
                     [
                         "error_message" => $th->getMessage(),
                         "error_stack_trace" => $th->getTraceAsString(),

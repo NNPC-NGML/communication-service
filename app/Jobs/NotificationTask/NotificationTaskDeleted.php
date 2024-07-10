@@ -27,13 +27,15 @@ class NotificationTaskDeleted implements ShouldQueue
 
     /**
      * Execute the job.
+     *
+     * @param NotificationTaskService $notificationTaskService
+     * @param EmailService $emailService
+     * @return void
      */
-    public function handle(): void
+    public function handle(NotificationTaskService $notificationTaskService, EmailService $emailService): void
     {
-        $service = new NotificationTaskService();
-        $service->destroy($this->id);
-        //
-        $emailService = new EmailService();
-        $emailService->destroy($this->id);
+        $id = $this->id;
+        $notificationTaskService->destroy($id);
+        $emailService->destroy($id);
     }
 }

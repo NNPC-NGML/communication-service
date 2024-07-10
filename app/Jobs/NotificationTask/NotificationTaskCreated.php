@@ -38,15 +38,14 @@ class NotificationTaskCreated implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param NotificationTaskService $notificationTaskService
+     * @param EmailService $emailService
      * @return void
      */
-    public function handle(): void
+    public function handle(NotificationTaskService $notificationTaskService, EmailService $emailService): void
     {
-        $service = new NotificationTaskService();
         $data = $this->data;
-        $service->create($data);
-        //
-        $emailService = new EmailService();
+        $notificationTaskService->create($data);
         $emailService->create($data);
     }
 }

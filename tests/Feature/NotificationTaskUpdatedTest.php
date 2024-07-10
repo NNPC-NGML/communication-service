@@ -1,20 +1,18 @@
 <?php
-
 namespace Tests\Feature;
 
-use App\Jobs\NotificationTask\NotificationTaskCreated;
-use App\Services\EmailService;
+use App\Jobs\NotificationTask\NotificationTaskUpdated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Queue;
 use Mockery;
 use Skillz\Nnpcreusable\Service\NotificationTaskService;
+use App\Services\EmailService;
 use Tests\TestCase;
 
-class NotificationTaskCreatedTest extends TestCase
+class NotificationTaskUpdatedTest extends TestCase
 {
     /**
-     * Test the handle method of the NotificationTaskCreated job.
+     * Test the handle method of the NotificationTaskUpdated job.
      */
     public function test_handle(): void
     {
@@ -28,7 +26,7 @@ class NotificationTaskCreatedTest extends TestCase
             'user_id' => 5,
             'processflow_id' => 6,
             'processflow_step_id' => 7,
-            'title' => "create task",
+            'title' => "update task",
             'route' => null,
             'start_time' => '1980-01-01',
             'end_time' => '1980-01-01',
@@ -37,13 +35,13 @@ class NotificationTaskCreatedTest extends TestCase
 
         // Mock the NotificationTaskService
         $mockNotificationTaskService = Mockery::mock(NotificationTaskService::class);
-        $mockNotificationTaskService->shouldReceive('create')
+        $mockNotificationTaskService->shouldReceive('update')
             ->once()
-            ->with($data);
+            ->with($data, $data['id']);
 
         // Mock the EmailService
         $mockEmailService = Mockery::mock(EmailService::class);
-        $mockEmailService->shouldReceive('create')
+        $mockEmailService->shouldReceive('update')
             ->once()
             ->with($data);
 
@@ -51,22 +49,22 @@ class NotificationTaskCreatedTest extends TestCase
         $this->app->instance(EmailService::class, $mockEmailService);
 
         // Create an instance of the job with the sample data
-        $job = new NotificationTaskCreated($data);
+        $job = new NotificationTaskUpdated($data);
 
         // Execute the handle method directly with the mocks
         $job->handle($mockNotificationTaskService, $mockEmailService);
 
-        // Verify that the NotificationTaskService's create method was called with the expected data
-        $mockNotificationTaskService->shouldHaveReceived('create')
+        // Verify that the NotificationTaskService's update method was called with the expected data
+        $mockNotificationTaskService->shouldHaveReceived('update')
+            ->once()
+            ->with($data, $data['id']);
+
+        // Verify that the EmailService's update method was called with the expected data
+        $mockEmailService->shouldHaveReceived('update')
             ->once()
             ->with($data);
 
-        // Verify that the EmailService's create method was called with the expected data
-        $mockEmailService->shouldHaveReceived('create')
-            ->once()
-            ->with($data);
-
-        // Explicit assertions to count as assertions in PHPUnit
-        $this->assertTrue(true);  // This is just to satisfy PHPUnit
+        // Explicit assertion to count as an assertion in PHPUnit
+        $this->assertTrue(true);
     }
 }
