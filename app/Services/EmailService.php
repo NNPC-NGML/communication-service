@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Skillz\Nnpcreusable\Service\UserService;
 
 class EmailService
 {
@@ -22,12 +23,14 @@ class EmailService
     public function create(array $request): void
     {
         //TODO transform to email data [receiver, message_body, subject, email, link]
+        $service = new  UserService();
+        $user = $service->getUser($request['user_id']);
         $emailData = [
             "notification_task_id" =>  $request['id'],
-            "receiver" => "",    // company eg Dangoto Industry
+            "receiver" => $user->name,    // company eg Dangoto Industry
             "message_body" => "",             // message_body details
             "subject" => "",     // email subject
-            "email" => "",       // email address
+            "email" => $user->email,       // email address
             "link" => "",                // link for clicks
         ];
         $this->sendNotificationEmail($emailData);
