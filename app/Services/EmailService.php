@@ -22,16 +22,15 @@ class EmailService
      */
     public function create(array $request): void
     {
-        //TODO transform to email data [receiver, message_body, subject, email, link]
         $service = new  UserService();
         $user = $service->getUser($request['user_id']);
         $emailData = [
             "notification_task_id" =>  $request['id'],
-            "receiver" => $user->name,    // company eg Dangoto Industry
-            "message_body" => "",             // message_body details
-            "subject" => "",     // email subject
-            "email" => $user->email,       // email address
-            "link" => "",                // link for clicks
+            "receiver" => $user->name,              // company eg Dangoto Industry
+            "message_body" => $request['message'],  // message_body details
+            "subject" =>  $request['subject'],      // email subject
+            "email" => $user->email,                // email address
+            "link" => "",                           // link for clicks
         ];
         $this->sendNotificationEmail($emailData);
     }
@@ -45,15 +44,16 @@ class EmailService
     public function update(array $request): void
     {
         $emailNotification = EmailNotification::where("notification_task_id", $request["id"]);
-        if($emailNotification){
-            // TODO UPDATE email data [receiver, message_body, subject, email, link]
+        if ($emailNotification) {
+            $service = new  UserService();
+            $user = $service->getUser($request['user_id']);
             $emailData = [
                 "notification_task_id" =>  $request['id'],
-                "receiver" => "",    // company eg Dangoto Industry
-                "message_body" => "",             // message_body details
-                "subject" => "",     // email subject
-                "email" => "",       // email address
-                "link" => "",                // link for clicks
+                "receiver" => $user->name,              // company eg Dangoto Industry
+                "message_body" => $request['message'],  // message_body details
+                "subject" =>  $request['subject'],      // email subject
+                "email" => $user->email,                // email address
+                "link" => "",                           // link for clicks
             ];
             $this->sendNotificationEmail($emailData);
         }
@@ -68,7 +68,7 @@ class EmailService
     public function destroy(int $id): void
     {
         $emailNotification = EmailNotification::where("notification_task_id", $id);
-        if($emailNotification){
+        if ($emailNotification) {
             $emailNotification->delete();
         }
     }
