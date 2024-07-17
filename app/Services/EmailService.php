@@ -30,7 +30,6 @@ class EmailService
             "message_body" => $request['message'],  // message_body details
             "subject" =>  $request['subject'],      // email subject
             "email" => $user->email,                // email address
-            "link" => "",                           // link for clicks
         ];
         $this->sendNotificationEmail($emailData);
     }
@@ -53,7 +52,6 @@ class EmailService
                 "message_body" => $request['message'],  // message_body details
                 "subject" =>  $request['subject'],      // email subject
                 "email" => $user->email,                // email address
-                "link" => "",                           // link for clicks
             ];
             $this->sendNotificationEmail($emailData);
         }
@@ -88,7 +86,6 @@ class EmailService
             "message_body" => "required|string",             // message_body details
             "subject" => "required|string|max:255",     // email subject
             "email" => "required|string|max:255",       // email address
-            "link" => "nullable|string",                // link for clicks
         ]);
 
         if ($validator->fails()) {

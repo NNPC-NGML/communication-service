@@ -6,8 +6,6 @@ use Tests\TestCase;
 use App\Services\EmailService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationEmail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class EmailServiceTest extends TestCase
 {
@@ -27,7 +25,6 @@ class EmailServiceTest extends TestCase
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
-            "link" => "http://example.com"
         ];
 
         $result = $this->emailService->validateEmailData($data);
@@ -37,7 +34,6 @@ class EmailServiceTest extends TestCase
         $this->assertEquals($data['message_body'], $result->message_body);
         $this->assertEquals($data['subject'], $result->subject);
         $this->assertEquals($data['email'], $result->email);
-        $this->assertEquals($data['link'], $result->link);
     }
 
     public function testValidateEmailDataValidationError()
@@ -48,7 +44,6 @@ class EmailServiceTest extends TestCase
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
-            "link" => "http://example.com"
         ];
 
         try {
@@ -69,7 +64,6 @@ class EmailServiceTest extends TestCase
             'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
             "subject" => "Test Subject",
             "email" => "akubueaugustutuskc@gmail.com",
-            "link" => "http://example.com"
         ];
 
         Mail::fake();
