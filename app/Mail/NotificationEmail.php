@@ -13,29 +13,40 @@ use Illuminate\Queue\SerializesModels;
 class NotificationEmail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    /**
+     * The notification object.
+     *
+     * @var object
+     */
     private object $notification;
 
     /**
      * Create a new message instance.
+     *
+     * @param object $notification The notification object containing email data.
      */
     public function __construct(object $notification)
     {
-        //
-        $this->notification=$notification;
+        $this->notification = $notification;
     }
 
     /**
      * Get the message envelope.
+     *
+     * @return Envelope
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->notification->subject,
+            subject: $this->notification->subject
         );
     }
 
     /**
      * Get the message content definition.
+     *
+     * @return Content
      */
     public function content(): Content
     {
@@ -44,10 +55,9 @@ class NotificationEmail extends Mailable
             with: [
                 'title' => "Hello, {$this->notification->receiver}!",
                 'message_body' => "{$this->notification->message_body}",
-                'appName' => "NNPC",
-                'websiteUrl' => 'https://website.com',
-                'logoUrl' => 'https://firebasestorage.googleapis.com/v0/b/server-sec5.appspot.com/o/nnpc-logo.png?alt=media',
-                'supportMail' => 'support@mail.com',
+                'appName' => env('MAIL_FROM_NAME', 'NNPC-NGML'),
+                'websiteUrl' => env('MAIL_WEBSITE'),
+                'supportMail' => env('MAIL_SUPPORT'),
             ]
         );
     }

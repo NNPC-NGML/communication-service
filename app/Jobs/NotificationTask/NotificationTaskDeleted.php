@@ -16,20 +16,28 @@ class NotificationTaskDeleted implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
+     * The ID of the notification task to be deleted.
+     *
+     * @var mixed
      */
-
     private $id;
+
+    /**
+     * Create a new job instance.
+     *
+     * @param mixed $id The ID of the notification task to be deleted.
+     * @return void
+     */
     public function __construct($id)
     {
         $this->id = $id;
     }
 
     /**
-     * Execute the job.
+     * Execute the job to handle deletion of notification task.
      *
-     * @param NotificationTaskService $notificationTaskService
-     * @param EmailService $emailService
+     * @param NotificationTaskService $notificationTaskService The notification task service instance.
+     * @param EmailService $emailService The email service instance.
      * @return void
      */
     public function handle(NotificationTaskService $notificationTaskService, EmailService $emailService): void

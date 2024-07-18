@@ -14,14 +14,14 @@ class CustomerUpdated implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The data for updating the department.
+     * The data for updating the customer.
      *
      * @var array
      */
     private array $data;
 
     /**
-     * The ID of the department to be updated.
+     * The ID of the customer to be updated.
      *
      * @var int
      */
@@ -30,26 +30,22 @@ class CustomerUpdated implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array $data
-     * @param int $id
+     * @param array $data The data for updating the customer.
      */
     public function __construct(array $data)
     {
         $this->data = $data;
-        $this->id = $data['id'];
+        $this->id = $data['id']; // Assuming 'id' is a key in the data array
     }
 
-
-
-
     /**
-     * Execute the job.
+     * Execute the job to handle update of customer.
+     *
      * @return void
      */
     public function handle(): void
     {
-
-        $service = new  CustomerService();
+        $service = new CustomerService();
         $service->updateCustomer($this->data, $this->id);
     }
 }

@@ -13,20 +13,31 @@ class CustomerDeleted implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * The ID of the customer to be deleted.
+     *
+     * @var int
+     */
     private int $id;
-    public function __construct($id)
+
+    /**
+     * Create a new job instance.
+     *
+     * @param int $id The ID of the customer to be deleted.
+     */
+    public function __construct(int $id)
     {
         $this->id = $id;
     }
+
     /**
-     * Execute the job.
+     * Execute the job to handle deletion of customer.
      *
      * @return void
      */
     public function handle(): void
     {
-
-        $service = new  CustomerService();
+        $service = new CustomerService();
         $service->destroyCustomer($this->id);
     }
 }

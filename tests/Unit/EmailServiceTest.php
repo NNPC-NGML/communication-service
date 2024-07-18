@@ -2,10 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Jobs\Communication\SendNotificationEmail;
 use Tests\TestCase;
 use App\Services\EmailService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationEmail;
+use Illuminate\Support\Facades\Bus;
 
 class EmailServiceTest extends TestCase
 {
@@ -66,12 +68,29 @@ class EmailServiceTest extends TestCase
             "email" => "akubueaugustutuskc@gmail.com",
         ];
 
+        // Fake the job and mail
+        Bus::fake();
         Mail::fake();
 
-        $this->emailService->sendNotificationEmail($notification);
+        // Dispatch the job
+        SendNotificationEmail::dispatch($notification)->onQueue("communication_queue");
 
-        Mail::assertSent(NotificationEmail::class, function ($mail) use ($notification) {
-            return $mail->hasTo($notification["email"]);
+        // Assert the job was dispatched
+        Bus::assertDispatched(SendNotificationEmail::class, function ($job) use ($notification) {
+            return $job->data === $notification;
+        });
+
+        // Run the job to test the email sending
+        Bus::assertDispatched(SendNotificationEmail::class, function ($job) use ($notification) {
+            // Execute the job
+            $job->handle(app(EmailService::class));
+
+            // Assert the email was sent
+            Mail::assertSent(NotificationEmail::class, function ($mail) use ($notification) {
+                return $mail->hasTo($notification["email"]);
+            });
+
+            return true;
         });
     }
 }

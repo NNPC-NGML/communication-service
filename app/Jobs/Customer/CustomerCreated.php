@@ -15,7 +15,7 @@ class CustomerCreated implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The data for creating the unit.
+     * The data for creating the customer.
      *
      * @var array
      */
@@ -24,7 +24,7 @@ class CustomerCreated implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array $data
+     * @param array $data The data for creating the customer.
      */
     public function __construct(array $data)
     {
@@ -32,14 +32,13 @@ class CustomerCreated implements ShouldQueue
     }
 
     /**
-     * Execute the job.
+     * Execute the job to handle creation of customer.
      *
      * @return void
      */
     public function handle(): void
     {
-
-        $service = new  CustomerService();
+        $service = new CustomerService();
         $service->createCustomer($this->data);
     }
 }
