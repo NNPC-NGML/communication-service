@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Jobs\Communication\SendNotificationEmail;
 use Tests\TestCase;
 use App\Services\EmailService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationEmail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Bus;
 
 class EmailServiceTest extends TestCase
 {
@@ -27,7 +27,6 @@ class EmailServiceTest extends TestCase
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
-            "link" => "http://example.com"
         ];
 
         $result = $this->emailService->validateEmailData($data);
@@ -37,7 +36,6 @@ class EmailServiceTest extends TestCase
         $this->assertEquals($data['message_body'], $result->message_body);
         $this->assertEquals($data['subject'], $result->subject);
         $this->assertEquals($data['email'], $result->email);
-        $this->assertEquals($data['link'], $result->link);
     }
 
     public function testValidateEmailDataValidationError()
@@ -48,7 +46,6 @@ class EmailServiceTest extends TestCase
             "message_body" => "This is a test message.",
             "subject" => "Test Subject",
             "email" => "test@example.com",
-            "link" => "http://example.com"
         ];
 
         try {
@@ -69,15 +66,31 @@ class EmailServiceTest extends TestCase
             'message_body' => "Your application has been approved and is awaiting pending confirmation, please kindly exercise some patience while your requests are been addressed properly. Thank you!",
             "subject" => "Test Subject",
             "email" => "akubueaugustutuskc@gmail.com",
-            "link" => "http://example.com"
         ];
 
+        // Fake the job and mail
+        Bus::fake();
         Mail::fake();
 
-        $this->emailService->sendNotificationEmail($notification);
+        // Dispatch the job
+        SendNotificationEmail::dispatch($notification)->onQueue("communication_queue");
 
-        Mail::assertSent(NotificationEmail::class, function ($mail) use ($notification) {
-            return $mail->hasTo($notification["email"]);
+        // Assert the job was dispatched
+        Bus::assertDispatched(SendNotificationEmail::class, function ($job) use ($notification) {
+            return $job->data === $notification;
+        });
+
+        // Run the job to test the email sending
+        Bus::assertDispatched(SendNotificationEmail::class, function ($job) use ($notification) {
+            // Execute the job
+            $job->handle(app(EmailService::class));
+
+            // Assert the email was sent
+            Mail::assertSent(NotificationEmail::class, function ($mail) use ($notification) {
+                return $mail->hasTo($notification["email"]);
+            });
+
+            return true;
         });
     }
 }

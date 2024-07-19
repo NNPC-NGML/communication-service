@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Jobs\NotificationTask\NotificationTaskDeleted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +14,7 @@ class NotificationTaskDeletedTest extends TestCase
     /**
      * Test the handle method of the NotificationTaskDeleted job.
      */
-    public function test_handle(): void
+    public function testNotificationTaskDeletedJob(): void
     {
         // Sample ID
         $id = 1;

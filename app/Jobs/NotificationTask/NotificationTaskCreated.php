@@ -2,8 +2,6 @@
 
 namespace App\Jobs\NotificationTask;
 
-// use App\Models\Designation;
-
 use App\Services\EmailService;
 use Illuminate\Bus\Queueable;
 use Skillz\Nnpcreusable\Service\NotificationTaskService;
@@ -18,7 +16,7 @@ class NotificationTaskCreated implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The data for creating the designation.
+     * The data for creating the notification task.
      *
      * @var array
      */
@@ -27,7 +25,7 @@ class NotificationTaskCreated implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array $data The data for creating the designation
+     * @param array $data The data for creating the notification task.
      * @return void
      */
     public function __construct(array $data)
@@ -36,10 +34,10 @@ class NotificationTaskCreated implements ShouldQueue
     }
 
     /**
-     * Execute the job.
+     * Execute the job to handle creation of notification task.
      *
-     * @param NotificationTaskService $notificationTaskService
-     * @param EmailService $emailService
+     * @param NotificationTaskService $notificationTaskService The notification task service instance.
+     * @param EmailService $emailService The email service instance.
      * @return void
      */
     public function handle(NotificationTaskService $notificationTaskService, EmailService $emailService): void

@@ -2,14 +2,11 @@
 
 namespace App\Providers;
 
-use App\Jobs\NotificationTask\NotificationTaskCreated;
-use App\Jobs\NotificationTask\NotificationTaskDeleted;
-use App\Jobs\NotificationTask\NotificationTaskUpdated;
+use App\Jobs\Communication\SendNotificationEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,9 +27,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        App::bindMethod(NotificationTaskCreated::class . '@handle', fn($job) => $job->handle());
-        App::bindMethod(NotificationTaskUpdated::class . '@handle', fn($job) => $job->handle());
-        App::bindMethod(NotificationTaskDeleted::class . '@handle', fn($job) => $job->handle());
+        App::bindMethod(SendNotificationEmail::class . '@handle', fn($job) => $job->handle());
     }
 
     /**
