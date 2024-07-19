@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Jobs\NotificationTask\NotificationTaskDeleted;
@@ -11,6 +12,7 @@ use Tests\TestCase;
 
 class NotificationTaskDeletedTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     /**
      * Test the handle method of the NotificationTaskDeleted job.
      */

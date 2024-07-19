@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Jobs\NotificationTask\NotificationTaskUpdated;
@@ -11,6 +12,7 @@ use Tests\TestCase;
 
 class NotificationTaskUpdatedTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     /**
      * Test the handle method of the NotificationTaskUpdated job.
      */

@@ -13,6 +13,7 @@ use Tests\TestCase;
 
 class NotificationTaskCreatedTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     /**
      * Test the handle method of the NotificationTaskCreated job.
      */
