@@ -2,15 +2,18 @@
 
 namespace Tests\Unit;
 
-use App\Jobs\Communication\SendNotificationEmail;
 use Tests\TestCase;
 use App\Services\EmailService;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationEmail;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Testing\WithFaker;
+use App\Jobs\Communication\SendNotificationEmail;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EmailServiceTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     protected $emailService;
 
     protected function setUp(): void

@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 class UserDeletedTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     /**
      * A basic feature test example.
      */
