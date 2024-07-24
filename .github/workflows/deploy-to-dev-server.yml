@@ -123,8 +123,8 @@ jobs:
           rsync --delete -va -e 'ssh -p 7822 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no' \
             app database phpunit.xml storage vendor artisan .env tests bootstrap \
             composer.json resources composer.lock routes config package.json \
-            public/ public skillz@185.160.67.60:nnpc/api/communication
+            public/ public skillz@103.72.76.68:nnpc/api/communication
 # change service_name_placeholder to the name of your service eg automator etc
       - name: SSH and effect migration
         run: |
-          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@185.160.67.60 "cd nnpc/api/communication && php artisan migrate && php artisan db:seed "
+          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@103.72.76.68 "cd nnpc/api/communication && php artisan migrate && php artisan db:seed "
