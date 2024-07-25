@@ -15,7 +15,7 @@ class EmailNotification extends Model
         'updated_at',
     ];
 
-    protected $cast = [
+    protected $casts = [
         "notification_task_id" => "integer",
         "status" => "boolean"
     ];
